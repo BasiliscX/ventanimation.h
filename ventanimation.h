@@ -12,8 +12,17 @@ void PosXY(int x, int y){
     newPosition.Y=y;
     SetConsoleCursorPosition(hConsole, newPosition);
 }
-/// Get position X:
-int getPosX(){
+/// cout position (X,Y) of cursor:
+void Pos_X_Y_INFO(){
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+    GetConsoleScreenBufferInfo(hConsole, &consoleInfo);
+
+    COORD posicionCursor = consoleInfo.dwCursorPosition;
+    std::cout << "X: " << posicionCursor.X << " - Y: " << posicionCursor.Y << std::endl;
+}
+/// Return position X:
+int PosX(){
 HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
 CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
 if (GetConsoleScreenBufferInfo(hConsole, &consoleInfo)){
@@ -22,8 +31,8 @@ if (GetConsoleScreenBufferInfo(hConsole, &consoleInfo)){
 }
 else return 0;
 }
-/// Get position Y:
-int getPosY(){
+/// Return position Y:
+int PosY(){
 HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
 CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
 if (GetConsoleScreenBufferInfo(hConsole, &consoleInfo)){
@@ -40,11 +49,11 @@ void Pause(int millisecond) {
 }
 
 /// Draw a box:
-void BoxAnimation(int tipe=1, int width=20, int height=10, int velocity=5){
+void BoxAnimation(int tipe=1, int width=20, int height=10, int velocity=50){
 
 int i, x, y;
-x=getPosX();
-y=getPosY();
+x=PosX();
+y=PosY();
 
 switch(tipe){
 case 1:
@@ -100,7 +109,7 @@ break;
 }
 }
 /// Create a typing animation with the entered text.
-void TextAnimation(const char*text="Here is your text.", int velocity=5){
+void TextAnimation(const char*text="Here is your text.", int velocity=10){
 
 int i=0;
 while(text[i]!='\0'){std::cout<<text[i++];Pause(velocity);}
@@ -148,4 +157,24 @@ SetConsoleWindowInfo(hConsole,TRUE,&window);
 void ConsoleTitle(const char*TITLE="New Title."){
 SetConsoleTitle(TEXT(TITLE));
 }
+/// Clear console(especific line/position).
+void ConsoleClsX_Y(int X, int Y, int amount=ConsoleColumns()){
+    HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD coord={static_cast<SHORT>(X),static_cast<SHORT>(Y)};
+    DWORD cells=amount;
+    DWORD CHARACTER_W;
+
+    FillConsoleOutputCharacter(hConsole,TEXT(' '),cells,coord,&CHARACTER_W);
+}
+/// Show or hide cursor.
+void ConsoleCursorSHOW_HIDE(bool CURSOR=true){
+
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO cursorInfo;
+
+    GetConsoleCursorInfo(hConsole, &cursorInfo);
+    cursorInfo.bVisible = CURSOR;
+    SetConsoleCursorInfo(hConsole, &cursorInfo);
+}
+
 
