@@ -1,5 +1,20 @@
 #pragma once
 
+/*
+  File: ventanimation.h
+  Author: Guillermo Navarro
+  Date: 30/07/2023
+  Description:
+
+    This software provides a collection of console manipulation and animation functions in C++
+    that allows users to perform various tasks, such as changing the cursor position, modifying the console size,
+    displaying text with animation, drawing boxes with animation, and more.
+    The functions facilitate interactive and visually appealing console-based applications.
+
+    The software is distributed under the MIT Zero-Clause License,
+    granting users the freedom to use, modify, and distribute the code freely.
+*/
+
 #include<iostream>
 #include<ctime>
 #include<windows.h>
